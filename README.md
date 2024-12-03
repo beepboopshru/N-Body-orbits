@@ -1,5 +1,4 @@
-The mathematical foundation for this simulation is rooted in Newtonian mechanics and gravitational dynamics. Here's a breakdown of the key concepts and formulas involved, along with how they are implemented in the code.
-
+The mathematical foundation for this simulation is rooted in Newtonian mechanics and gravitational dynamics.
 ---
 
 ## 1. **Newton's Law of Gravitation**
@@ -122,6 +121,3 @@ where \( h = r \cdot v \cdot \sin(\theta) \) is the angular momentum per unit ma
 
 This is not explicitly coded here, but the simulation inherently resolves these dynamics based on initial conditions.
 
----
-
-By combining these principles, the simulation models the motion of celestial bodies and their interactions accurately. Let me know if you'd like more details on any step! 🚀
