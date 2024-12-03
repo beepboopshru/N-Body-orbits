@@ -1,123 +1,112 @@
-The mathematical foundation for this simulation is rooted in Newtonian mechanics and gravitational dynamics.
----
+# **Gravitational Orbit Simulation**
 
-## 1. **Newton's Law of Gravitation**
-
-The gravitational force between two bodies is given by:
-
-\[
-F = \frac{G \cdot m_1 \cdot m_2}{r^2}
-\]
-
-- \( G \): Gravitational constant (\(6.67430 \times 10^{-11} \, \text{m}^3 \text{kg}^{-1} \text{s}^{-2}\)).
-- \( m_1, m_2 \): Masses of the two bodies.
-- \( r \): Distance between the two bodies.
-
-In vector form, the force on body \( i \) due to body \( j \) is:
-
-\[
-\vec{F}_{ij} = \frac{G \cdot m_i \cdot m_j}{r^3} (\vec{r}_j - \vec{r}_i)
-\]
-
-where \( \vec{r}_j - \vec{r}_i \) is the displacement vector from \( i \) to \( j \).
+This project is a **gravitational orbit simulator** that numerically models the motion of celestial bodies using Newtonian mechanics. The program can simulate various scenarios such as the motion of planets, comets, and perturbations caused by external forces. It also provides a visual representation of the system and mathematical insights into the orbital mechanics.
 
 ---
 
-### Code Implementation
+## **Features**
 
-```python
-r = np.linalg.norm(body2.pos - body1.pos)  # Distance between bodies
-force_magnitude = G * body1.mass * body2.mass / r**2  # Magnitude of force
-force_direction = (body2.pos - body1.pos) / r  # Unit vector
-forces[body1] += force_magnitude * force_direction  # Add to net force
-```
-
-This calculates the force on `body1` due to `body2` and accumulates it in a dictionary for each body.
-
----
-
-## 2. **Newton's Second Law**
-
-The acceleration of a body due to a net force is:
-
-\[
-\vec{a} = \frac{\vec{F}}{m}
-\]
-
-Given acceleration, the velocity and position of the body are updated using numerical integration (Euler's method):
-
-\[
-\vec{v}_{\text{new}} = \vec{v}_{\text{old}} + \vec{a} \cdot \Delta t
-\]
-
-\[
-\vec{r}_{\text{new}} = \vec{r}_{\text{old}} + \vec{v}_{\text{new}} \cdot \Delta t
-\]
+1. **N-Body Simulation**: Simulates gravitational interactions between multiple celestial bodies.
+2. **Dynamic Visualization**: 
+   - Real-time animation of orbits.
+   - Trajectory tracking for each body.
+3. **Energy Analysis**:
+   - Classifies orbits as circular, elliptical, parabolic, or hyperbolic based on specific orbital energy.
+4. **Collision Detection**: Detects when two bodies collide or come too close.
+5. **Customizable Parameters**:
+   - Initial positions, velocities, and masses of bodies.
+   - Time step (\( \Delta t \)) for numerical integration.
+6. **Keplerian Mechanics**: Incorporates calculations for orbital elements like true anomaly, eccentricity, and semi-major axis.
 
 ---
 
-### Code Implementation
-
-```python
-acceleration = force / self.mass
-self.vel += acceleration * dt  # Update velocity
-self.pos += self.vel * dt  # Update position
-```
-
-Each body’s velocity and position are updated iteratively over small time steps, \( \Delta t \).
+ Observe the simulation in the **Pygame window**, with real-time updates of:
+   - Orbital trajectories.
+   - Key orbital parameters in the top-left corner.
 
 ---
 
-## 3. **Keplerian Dynamics**
+## **Mathematical Concepts**
 
-To check if a comet or other body becomes bound to the system or escapes, we compute the **specific orbital energy** (\( \epsilon \)):
+1. **Newton's Law of Gravitation**:
+   \[
+   \vec{F} = \frac{G \cdot m_1 \cdot m_2}{r^3} \cdot (\vec{r}_2 - \vec{r}_1)
+   \]
 
-\[
-\epsilon = \frac{v^2}{2} - \frac{G \cdot M}{r}
-\]
+2. **Numerical Integration**:
+   - Velocity update:
+     \[
+     \vec{v}_{\text{new}} = \vec{v}_{\text{old}} + \vec{a} \cdot \Delta t
+     \]
+   - Position update:
+     \[
+     \vec{r}_{\text{new}} = \vec{r}_{\text{old}} + \vec{v}_{\text{new}} \cdot \Delta t
+     \]
 
-- \( v \): Magnitude of velocity.
-- \( r \): Distance from the central body (e.g., the Sun).
-- \( M \): Mass of the central body.
+3. **Orbital Energy**:
+   \[
+   \epsilon = \frac{v^2}{2} - \frac{G \cdot M}{r}
+   \]
 
-- If \( \epsilon < 0 \), the body is **bound** and will follow an elliptical or circular orbit.
-- If \( \epsilon = 0 \), the body is on a **parabolic trajectory**.
-- If \( \epsilon > 0 \), the body is **unbound** and escapes on a hyperbolic trajectory.
-
----
-
-### Code Implementation
-
-```python
-r = np.linalg.norm(comet.pos)
-v = np.linalg.norm(comet.vel)
-energy = 0.5 * v**2 - G * M_sun / r
-
-if energy < 0:
-    print("Comet is bound to the system.")
-elif energy == 0:
-    print("Comet is on a parabolic escape trajectory.")
-else:
-    print("Comet will escape the system.")
-```
+4. **Kepler's Equation**:
+   Solves for the true anomaly (\( \nu \)) numerically.
 
 ---
 
-## 4. **Orbit Plotting**
+## **Customization**
 
-To visualize the motion, we track the positions of bodies over time. The trajectory reflects the numerical solution of their equations of motion under gravitational forces.
+1. **Adding New Bodies**:
+   Modify the initialization in `main.py`:
+   ```python
+   bodies = [
+       CelestialBody(mass=1.989e30, pos=[0, 0], vel=[0, 0], name="Sun"),
+       CelestialBody(mass=5.972e24, pos=[1.496e11, 0], vel=[0, 29780], name="Earth"),
+       CelestialBody(mass=1e14, pos=[2e11, 0], vel=[0, 25000], name="Comet"),
+   ]
+   ```
+
+2. **Adjusting Time Step**:
+   Change the `dt` value in `main.py`:
+   ```python
+   dt = 3600  # Time step in seconds
+   ```
+
+3. **Visual Enhancements**:
+   Customize the `pygame` display for enhanced aesthetics.
 
 ---
 
-### Graphical Interpretation
+## **Possible Enhancements**
 
-- The **shape of the orbit** (circle, ellipse, parabola, or hyperbola) depends on the eccentricity:
+1. **Add Relativistic Effects**: Include general relativity for higher accuracy near massive bodies.
+2. **Implement Adaptive Time Stepping**: Improve simulation efficiency.
+3. **3D Simulation**: Extend the simulation to three dimensions.
+4. **Interactive UI**: Allow users to dynamically modify parameters during the simulation.
 
-\[
-e = \sqrt{1 + \frac{2 \epsilon h^2}{(G \cdot M)^2}}
-\]
+---
 
-where \( h = r \cdot v \cdot \sin(\theta) \) is the angular momentum per unit mass.
+## **Contributing**
 
-This is not explicitly coded here, but the simulation inherently resolves these dynamics based on initial conditions.
+Contributions are welcome! If you find a bug or have a feature request, feel free to open an issue or a pull request.
 
+1. Fork the repository.
+2. Create a new branch:
+   ```bash
+   git checkout -b feature-name
+   ```
+3. Commit changes:
+   ```bash
+   git commit -m "Add your message here"
+   ```
+4. Push to your branch and create a pull request.
+
+---
+
+## **Acknowledgments**
+
+- This project is inspired by classical mechanics and Keplerian orbital mechanics.
+- Thanks to the open-source Python community for providing incredible libraries like `numpy`, `pygame`, and `matplotlib`.
+
+---
+
+Let me know if you'd like to refine this further or if additional sections are needed! 🚀
